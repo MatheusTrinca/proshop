@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
   Card,
@@ -11,9 +11,25 @@ import {
   Row,
 } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 
 const CartScreen = () => {
   const { cartItems } = useSelector(state => state.cart);
+
+  const navivate = useNavigate();
+  const dispatch = useDispatch();
+
+  const addToCartHandler = (product, qty) => {
+    dispatch(addToCart({ ...product, qty }));
+  };
+
+  const removeFromCartHandler = id => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    navivate('/login?redirect=/shipping');
+  };
 
   return (
     <Row>
@@ -39,7 +55,7 @@ const CartScreen = () => {
                     <Form.Control
                       as="select"
                       value={item.qty}
-                      onChange={e => {}}
+                      onChange={e => addToCartHandler(item, e.target.value)}
                     >
                       {[...Array(item.countInStock).keys()].map(x => (
                         <option key={x + 1} value={x + 1}>
@@ -49,7 +65,11 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="light">
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => removeFromCartHandler(item._id)}
+                    >
                       <FaTrash />
                     </Button>
                   </Col>
@@ -64,13 +84,24 @@ const CartScreen = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Subtotal (
+                {cartItems.reduce((acc, item) => acc + Number(item.qty), 0)})
                 items
               </h2>
               $
               {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Proceed To Checkout
+              </Button>
             </ListGroup.Item>
           </ListGroup>
         </Card>
