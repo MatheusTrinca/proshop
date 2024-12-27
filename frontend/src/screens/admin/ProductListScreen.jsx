@@ -93,7 +93,7 @@ const ProductListScreen = () => {
                     className="btn-sm"
                     onClick={() => deleteHandler(product._id)}
                   >
-                    <FaTrash />
+                    <FaTrash color="white" />
                   </Button>
                 </td>
               </tr>
