@@ -10,7 +10,6 @@ import Loader from '../../components/Loader';
 import { Button, Form } from 'react-bootstrap';
 import Message from '../../components/Message';
 import { toast } from 'react-toastify';
-import { set } from 'mongoose';
 
 const ProductEditScreen = () => {
   const { id: productId } = useParams();
@@ -100,7 +99,7 @@ const ProductEditScreen = () => {
           </Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" className="my-2">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
@@ -110,7 +109,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="price">
+            <Form.Group controlId="price" className="my-2">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
@@ -120,7 +119,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="image">
+            <Form.Group controlId="image" className="my-2">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="text"
@@ -136,7 +135,7 @@ const ProductEditScreen = () => {
               {loadingUpload && <Loader />}
             </Form.Group>
 
-            <Form.Group controlId="brand">
+            <Form.Group controlId="brand" className="my-2">
               <Form.Label>Brand</Form.Label>
               <Form.Control
                 type="text"
@@ -146,7 +145,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="countInStock">
+            <Form.Group controlId="countInStock" className="my-2">
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
                 type="number"
@@ -156,7 +155,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="category">
+            <Form.Group controlId="category" className="my-2">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
@@ -166,7 +165,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="description">
+            <Form.Group controlId="description" className="my-2">
               <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
