@@ -5,7 +5,7 @@ import asyncHandler from '../middleware/asyncHandler.js';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 2;
+  const pageSize = 5;
   const page = Number(req.query.pageNumber) || 1;
 
   const totalCount = await Product.countDocuments();
