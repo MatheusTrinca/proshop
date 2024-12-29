@@ -1,12 +1,16 @@
 import { Button, Table } from 'react-bootstrap';
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
+import { useParams } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { FaTimes } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
+import Paginate from '../../components/Paginate';
 
 const OrderListScreen = () => {
-  const { data: orders, isLoading, error } = useGetOrdersQuery();
+  const { pageNumber } = useParams();
+
+  const { data, isLoading, error } = useGetOrdersQuery({ pageNumber });
 
   return (
     <>
@@ -32,7 +36,7 @@ const OrderListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {data.orders.map(order => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.user && order.user.name}</td>
@@ -65,9 +69,16 @@ const OrderListScreen = () => {
         </Table>
       )}
 
-      {orders && orders.length === 0 && !isLoading && (
+      {data?.orders?.length === 0 && !isLoading && (
         <Message variant="info">No orders</Message>
       )}
+
+      <Paginate
+        pages={data?.pages}
+        page={data?.page}
+        isAdmin={true}
+        purpose="orderlist"
+      />
     </>
   );
 };

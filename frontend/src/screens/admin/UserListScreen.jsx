@@ -8,9 +8,13 @@ import {
   useGetUsersQuery,
 } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import Paginate from '../../components/Paginate';
 
 const UserListScreen = () => {
-  const { data: users, isLoading, error, refetch } = useGetUsersQuery();
+  const { pageNumber } = useParams();
+
+  const { data, isLoading, error, refetch } = useGetUsersQuery({ pageNumber });
 
   const [deleteUser, { isLoading: loadingDelete }] = useDeleteUserMutation();
 
@@ -50,7 +54,7 @@ const UserListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {data.users.map(user => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
@@ -84,9 +88,16 @@ const UserListScreen = () => {
         </Table>
       )}
 
-      {users && users.length === 0 && !isLoading && (
+      {data?.users?.length === 0 && !isLoading && (
         <Message variant="info">No users</Message>
       )}
+
+      <Paginate
+        pages={data?.pages}
+        page={data?.page}
+        isAdmin={true}
+        purpose="userlist"
+      />
     </>
   );
 };
