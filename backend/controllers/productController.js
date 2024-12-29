@@ -5,16 +5,34 @@ import asyncHandler from '../middleware/asyncHandler.js';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 5;
+  const pageSize = 10;
   const page = Number(req.query.pageNumber) || 1;
 
-  const totalCount = await Product.countDocuments();
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {};
 
-  const products = await Product.find({})
+  const totalCount = await Product.countDocuments({ ...keyword });
+
+  const products = await Product.find({ ...keyword })
     .skip(pageSize * (page - 1))
     .limit(pageSize);
 
   res.json({ products, page, pages: Math.ceil(totalCount / pageSize) });
+});
+
+// @desc    Fetch top rated products
+// @route   GET /api/products/top
+// @access  Public
+const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.status(200).json(products);
 });
 
 // @desc    Fetch single product
@@ -138,4 +156,5 @@ export {
   updateProduct,
   deleteProduct,
   createProductReview,
+  getTopProducts,
 };

@@ -1,14 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  Image,
-  Form,
-  Button,
-  Card,
-  ListGroup,
-} from 'react-bootstrap';
+import { Row, Col, Image, Button, Card, ListGroup } from 'react-bootstrap';
 import {
   usePayOrderMutation,
   useGetPayPalClientIdQuery,
