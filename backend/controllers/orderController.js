@@ -110,7 +110,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const pageSize = 10;
+  const pageSize = process.env.PAGINATION_LIMIT || 10;
   const page = Number(req.query.pageNumber) || 1;
 
   const count = await Order.countDocuments();
